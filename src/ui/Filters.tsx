@@ -30,7 +30,7 @@ export function Filters(props: {
   } = props;
 
   return (
-    <Box borderWidth="1px" borderColor="whiteAlpha.200" borderRadius="lg" p={4} mt={6} bg="whiteAlpha.50">
+    <Box borderWidth="1px" borderColor="whiteAlpha.200" borderRadius="lg" p={4} mt={6} bg="whiteAlpha.50" > 
       <VStack align="stretch">
         <HStack justify="space-between" align="end" wrap="wrap">
           <Box minW={{ base: '100%', md: '320px' }}>
@@ -63,7 +63,7 @@ export function Filters(props: {
           </Button>
         </HStack>
 
-        <Box>
+        <Box aria-label="category-filter">
           <Text fontSize="sm" color="gray.400" mb={2}>
             Filter by data categories (leaf)
           </Text>
