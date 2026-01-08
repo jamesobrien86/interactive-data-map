@@ -57,6 +57,7 @@ export function Filters(props: {
               bg="gray.50"
               borderColor="blackAlpha.300"
               _hover={{ borderColor: 'blackAlpha.400' }}
+              aria-label="data-use-filter"
             >
               <option value="ALL">All</option>
               {uses.map((use: string) => (
@@ -97,6 +98,7 @@ export function Filters(props: {
           bg="white"
           borderRadius="lg"
           p={3}
+          aria-label="category-filter"
         >
           <Wrap>
             {categories.map((category: string) => {
