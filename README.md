@@ -74,7 +74,7 @@ polish - refactoring, cleanup, and documentation
     -   resolved dependency names
 -   Clear separation between domain logic (normalization, filtering,
     grouping) and UI components
--   Tools like Charka UI, React Flow where used to align with Eythca's
+-   Tools like Charka UI where used to align with Eythca's
     design system.
 
 ------------------------------------------------------------------------
