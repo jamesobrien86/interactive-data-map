@@ -1,5 +1,6 @@
 import { Box, Button, ButtonGroup, Flex, HStack, Separator, Text } from '@chakra-ui/react';
 import type { FiltersState } from '../domain/selectors';
+import type { LayoutMode } from '../domain/types';
 import { Filters } from './Filters';
 
 type Props = {
@@ -13,7 +14,8 @@ type Props = {
   onUseChange: (v: 'ALL' | string) => void;
   onToggleCategory: (c: string) => void;
   onClearCategories: () => void;
-
+  layoutMode: LayoutMode;
+  onLayoutModeChange: (v: LayoutMode) => void;
   groupMode: 'systemType' | 'dataUse';
   onGroupModeChange: (v: 'systemType' | 'dataUse') => void;
 };
@@ -29,6 +31,8 @@ export function PageToolbar({
   onClearCategories,
   groupMode,
   onGroupModeChange,
+  layoutMode,
+  onLayoutModeChange,
 }: Props) {
   return (
     <Box px={0} py={4}>
@@ -38,6 +42,14 @@ export function PageToolbar({
         </Text>
 
         <HStack>
+          <ButtonGroup size="sm" variant="outline">
+            <Button disabled={layoutMode === 'grid'} onClick={() => onLayoutModeChange('grid')}>
+              Grid
+            </Button>
+            <Button disabled={layoutMode === 'graph'} onClick={() => onLayoutModeChange('graph')}>
+              Graph
+            </Button>
+          </ButtonGroup>
           <ButtonGroup size="sm" variant="outline">
             <Button
               onClick={() => onGroupModeChange('systemType')}

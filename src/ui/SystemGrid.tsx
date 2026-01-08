@@ -1,9 +1,11 @@
 import { Box, Heading, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { groupByDataUse, groupBySystemType } from '../domain/selectors';
 import type { SystemNode } from '../domain/types';
 import { SystemCard } from './SystemCard';
 
 type GroupMode = 'systemType' | 'dataUse';
+const MotionDiv = motion.div;
 
 
 export function SystemGrid({
@@ -39,9 +41,20 @@ export function SystemGrid({
             columns={{ base: 1, md: 2, xl: 3 }}
             gap={6}
           >
+             <AnimatePresence mode="popLayout">
             {g.items.map((s) => (
-             <SystemCard key={`${g.key}:${s.id}`} system={s} systemIndex={systemIndex} />
+               <MotionDiv
+                key={`${g.key}:${s.id}`}
+                layout
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.15 }}
+              >
+                <SystemCard key={`${g.key}:${s.id}`} system={s} systemIndex={systemIndex} />
+             </MotionDiv>
             ))}
+            </AnimatePresence>
           </SimpleGrid>
         </Box>
       ))}

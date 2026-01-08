@@ -1,73 +1,102 @@
-# React + TypeScript + Vite
+# Data Map Visualizer (Prototype)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A frontend prototype for visualizing and exploring a system-level data
+map.\
+The application is designed as an interactive alternative to a
+spreadsheet, making it easier to understand how systems process data,
+which data categories are involved, and how systems relate to one
+another.
 
-Currently, two official plugins are available:
+------------------------------------------------------------------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to run the project
 
-## React Compiler
+### Local development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1.  Install dependencies:
 
-## Expanding the ESLint configuration
+    npm install
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2.  Start the development server:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+    npm run dev
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The application uses static sample data embedded directly in the source
+code, as allowed by the challenge instructions.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+------------------------------------------------------------------------
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Time spent
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Approximately **3:54:31** total, including: - data normalization
+and modeling - filtering and grouping logic - UI layout and visual
+polish - refactoring, cleanup, and documentation
+
+------------------------------------------------------------------------
+
+## Assumptions
+
+-   Sample data is static and does not need to be loaded dynamically.
+-   A system may have multiple data uses; when grouped by data use, a
+    system can appear in multiple groups.
+-   Leaf data categories are derived by taking the final segment of a
+    taxonomy path\
+    (for example: `user.derived.identifiable.location` → `location`).
+-   This project is a prototype rather than production software; clarity
+    and extensibility were prioritized over completeness.
+
+------------------------------------------------------------------------
+
+## Trade-offs
+
+-   System dependencies are displayed as a readable list in an
+    expandable "Details" section rather than rendered as arrows between
+    systems.\
+    This keeps the scope reasonable while still surfacing dependency
+    information.
+-   The Graph implementation is basic and could be greatly enhanced.
+-   Animations are intentionally minimal to avoid unnecessary
+    complexity.
+
+------------------------------------------------------------------------
+
+## Special / unique features
+
+-   Group-by toggle to relayout systems by:
+    -   System Type
+    -   Data Use
+-   Multi-select filtering by leaf data categories
+-   Deterministic colored tags for data categories and data uses,
+    improving visual scanability
+-   Expandable system details including:
+    -   system description
+    -   resolved dependency names
+-   Clear separation between domain logic (normalization, filtering,
+    grouping) and UI components
+-   Tools like Charka UI, React Flow where used to align with Eythca's
+    design system.
+
+------------------------------------------------------------------------
+
+## Anything else you should know
+
+-   The codebase is structured to support incremental improvement, such
+    as adding a graph-based layout or visual dependency arrows in the
+    future.
+-   Domain logic is isolated from presentation logic to keep components
+    focused and easier to reason about.
+-   UI decisions emphasize readability and usability over visual
+    complexity.
+
+------------------------------------------------------------------------
+
+## Feedback on the technical challenge
+
+I really enjoyed this challenge, I could of kept going.\
+The open-ended nature encouraged creative problem-solving and made it
+easy to focus on trade-offs and design decisions rather than a single
+"correct" solution. 
+
+Thank you for the opportunity --- I'm looking forward to discussing the
+implementation and possible next steps during the debrief interview.

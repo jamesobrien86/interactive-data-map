@@ -8,8 +8,9 @@ import {
   indexSystemsById,
   type FiltersState,
 } from './domain/selectors';
-import type { AppView } from './domain/types';
+import type { AppView, LayoutMode } from './domain/types';
 import { AppLayout } from './ui/AppLayout';
+import { GraphView } from './ui/GraphView';
 import { Login } from './ui/Login';
 import { PageToolbar } from './ui/PageToolbar';
 import { SystemGrid } from './ui/SystemGrid';
@@ -26,6 +27,8 @@ export default function App() {
     selectedUse: 'ALL',
     selectedCategories: new Set<string>(),
   });
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>('grid');
+
 
   const visibleSystems = useMemo(
     () => applyFilters(model.systems, filters),
@@ -45,6 +48,8 @@ export default function App() {
         totalCount={model.systems.length}
         visibleCount={visibleSystems.length}
         uses={uses}
+        layoutMode={layoutMode}
+        onLayoutModeChange={setLayoutMode}
         categories={categories}
         filters={filters}
         onUseChange={(v) => setFilters((f) => ({ ...f, selectedUse: v }))}
@@ -62,7 +67,15 @@ export default function App() {
         onGroupModeChange={setGroupMode}
       />
 
-      <SystemGrid systems={visibleSystems} groupMode={groupMode} systemIndex={systemIndex} />
+      {layoutMode === 'grid' ? (
+          <SystemGrid
+            systems={visibleSystems}
+            groupMode={groupMode}
+            systemIndex={systemIndex}
+          />
+      ) : (
+        <GraphView systems={visibleSystems} />
+      )}
     </AppLayout>
   );
 }
