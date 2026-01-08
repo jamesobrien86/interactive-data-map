@@ -2,13 +2,13 @@ export type LayoutMode = 'grid' | 'graph';
 export type AppView = 'login' | 'dashboard';
 
 export interface SystemNode {
-  id: string; // fides_key
+  id: string; 
   name: string;
   description?: string;
   systemType: string;
   dataUses: string[];
-  dataCategories: string[]; // full taxonomy paths
-  dependencies: string[]; // fides_key references
+  dataCategories: string[]; 
+  dependencies: string[]; 
 }
 
 export interface DataMapModel {

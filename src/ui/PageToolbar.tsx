@@ -1,4 +1,4 @@
-import { Box, Flex, Separator, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Flex, HStack, Separator, Text } from '@chakra-ui/react';
 import type { FiltersState } from '../domain/selectors';
 import { Filters } from './Filters';
 
@@ -14,7 +14,8 @@ type Props = {
   onToggleCategory: (c: string) => void;
   onClearCategories: () => void;
 
-
+  groupMode: 'systemType' | 'dataUse';
+  onGroupModeChange: (v: 'systemType' | 'dataUse') => void;
 };
 
 export function PageToolbar({
@@ -26,45 +27,45 @@ export function PageToolbar({
   onUseChange,
   onToggleCategory,
   onClearCategories,
+  groupMode,
+  onGroupModeChange,
 }: Props) {
   return (
-    <Box px={{ base: 4, md: 0 }} py={4}>
-      <Box
-        borderWidth="1px"
-        borderColor="blackAlpha.200"
-        borderRadius="xl"
-        bg="white"
-        boxShadow="sm"
-        overflow="hidden"
-      >
-        <Flex
-          align="center"
-          justify="space-between"
-          px={5}
-          py={4}
-          bg="gray.50"
-        >
-          <Text fontSize="sm" color="gray.700">
-            Showing <Text as="span" fontWeight="semibold">{visibleCount}</Text> of{' '}
-            <Text as="span" fontWeight="semibold">{totalCount}</Text> systems
-          </Text>
+    <Box px={0} py={4}>
+      <Flex align="center" justify="space-between" mb={3} gap={3} wrap="wrap">
+        <Text fontSize="sm" color="gray.600">
+          Showing {visibleCount} of {totalCount} systems
+        </Text>
 
-        </Flex>
+        <HStack>
+          <ButtonGroup size="sm" variant="outline">
+            <Button
+              onClick={() => onGroupModeChange('systemType')}
+              disabled={groupMode === 'systemType'}
+            >
+              System type
+            </Button>
+            <Button
+              onClick={() => onGroupModeChange('dataUse')}
+              disabled={groupMode === 'dataUse'}
+            >
+              Data use
+            </Button>
+          </ButtonGroup>
+        </HStack>
+      </Flex>
 
-        <Separator borderColor="blackAlpha.200" />
+      <Separator mb={4} />
 
-        <Box px={5} pb={5} pt={4}>
-          <Filters
-            uses={uses}
-            categories={categories}
-            selectedUse={filters.selectedUse}
-            onUseChange={onUseChange}
-            selectedCategories={filters.selectedCategories}
-            onToggleCategory={onToggleCategory}
-            onClearCategories={onClearCategories}
-          />
-        </Box>
-      </Box>
+      <Filters
+        uses={uses}
+        categories={categories}
+        selectedUse={filters.selectedUse}
+        onUseChange={onUseChange}
+        selectedCategories={filters.selectedCategories}
+        onToggleCategory={onToggleCategory}
+        onClearCategories={onClearCategories}
+      />
     </Box>
   );
 }

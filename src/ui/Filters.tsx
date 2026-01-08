@@ -10,7 +10,6 @@ import {
   WrapItem
 } from '@chakra-ui/react';
 import { getTagColorScheme } from './TagColors';
-// If you're using Tag.Root from your DS, keep that and swap the Tag block below.
 
 
 export function Filters(props: {
@@ -111,7 +110,7 @@ export function Filters(props: {
                     role="button"
                     aria-pressed={active}
                     variant={active ? 'solid' : 'subtle'}
-                    colorPalette={colorScheme} // <- if you want chakra-only
+                    colorPalette={colorScheme}
                     onClick={() => onToggleCategory(category)}
                     _hover={{ opacity: 0.9 }}
                   >

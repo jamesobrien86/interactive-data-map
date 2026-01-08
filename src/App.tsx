@@ -1,15 +1,14 @@
 import { useMemo, useState } from 'react';
-
 import { SAMPLE_DATA } from './data/sample_data';
 import { normalizeData } from './domain/normalize';
 import {
   allDataUses,
   allLeafCategories,
   applyFilters,
+  indexSystemsById,
   type FiltersState,
 } from './domain/selectors';
 import type { AppView } from './domain/types';
-
 import { AppLayout } from './ui/AppLayout';
 import { Login } from './ui/Login';
 import { PageToolbar } from './ui/PageToolbar';
@@ -21,22 +20,24 @@ export default function App() {
   const model = useMemo(() => normalizeData(SAMPLE_DATA), []);
   const uses: string[] = useMemo(() => allDataUses(model), [model]);
   const categories: string[] = useMemo(() => allLeafCategories(model), [model]);
-
+  const [groupMode, setGroupMode] = useState<'systemType' | 'dataUse'>('systemType');
   const [view, setView] = useState<AppView>('login');
   const [filters, setFilters] = useState<FiltersState>({
     selectedUse: 'ALL',
     selectedCategories: new Set<string>(),
   });
+
   const visibleSystems = useMemo(
     () => applyFilters(model.systems, filters),
     [model.systems, filters],
   );
 
+  const systemIndex = useMemo(() => indexSystemsById(model.systems), [model.systems]);
+
 
   if (view === 'login') {
     return <Login onLogin={() => setView('dashboard')} />;
   }
-
 
   return (
     <AppLayout onLogout={() => setView('login')}>
@@ -57,9 +58,11 @@ export default function App() {
         onClearCategories={() =>
           setFilters((f) => ({ ...f, selectedCategories: new Set() }))
         }
+        groupMode={groupMode}
+        onGroupModeChange={setGroupMode}
       />
 
-      <SystemGrid systems={visibleSystems} />
+      <SystemGrid systems={visibleSystems} groupMode={groupMode} systemIndex={systemIndex} />
     </AppLayout>
   );
 }
