@@ -1,54 +1,65 @@
-import { Container, Heading, Stack, Text } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
+
 import { SAMPLE_DATA } from './data/sample_data';
 import { normalizeData } from './domain/normalize';
-import { allDataUses, allLeafCategories, applyFilters, type FiltersState } from './domain/selectors';
-import type { SystemNode } from './domain/types';
-import { Filters } from './ui/Filters';
+import {
+  allDataUses,
+  allLeafCategories,
+  applyFilters,
+  type FiltersState,
+} from './domain/selectors';
+import type { AppView } from './domain/types';
+
+import { AppLayout } from './ui/AppLayout';
+import { Login } from './ui/Login';
+import { PageToolbar } from './ui/PageToolbar';
 import { SystemGrid } from './ui/SystemGrid';
 
-export default function App() {
-  // Normalize sample data once
-  const model = useMemo(() => normalizeData(SAMPLE_DATA), []);
-// Get all data uses once
-  const uses:string[] = useMemo(() =>  allDataUses(model) , [model]);
-  // Get all leaf data categories once
-  const categories:string[] = useMemo(() =>  allLeafCategories(model) , [model]);
 
+export default function App() {
+    // dashboard logic below
+  const model = useMemo(() => normalizeData(SAMPLE_DATA), []);
+  const uses: string[] = useMemo(() => allDataUses(model), [model]);
+  const categories: string[] = useMemo(() => allLeafCategories(model), [model]);
+
+  const [view, setView] = useState<AppView>('login');
   const [filters, setFilters] = useState<FiltersState>({
     selectedUse: 'ALL',
     selectedCategories: new Set<string>(),
   });
-  // return visible systems based on filters
-  const visibleSystems:SystemNode[] = useMemo(() => applyFilters(model.systems, filters), [model.systems, filters]);
-  
+  const visibleSystems = useMemo(
+    () => applyFilters(model.systems, filters),
+    [model.systems, filters],
+  );
+
+
+  if (view === 'login') {
+    return <Login onLogin={() => setView('dashboard')} />;
+  }
+
 
   return (
-    <Container maxW="6xl" py={8}>
-      <Stack align="start" >
-        <Heading size="lg">Interactive Data Map</Heading>
-        <Text color="gray.400">Interactive Data Map</Text>
-         <Text color="gray.400"> Normalized {model.systems.length} systems (deduped by fides_key).</Text>
-      </Stack>
-       <Filters
+    <AppLayout onLogout={() => setView('login')}>
+     <PageToolbar
+        totalCount={model.systems.length}
+        visibleCount={visibleSystems.length}
         uses={uses}
         categories={categories}
-        selectedUse={filters.selectedUse}
+        filters={filters}
         onUseChange={(v) => setFilters((f) => ({ ...f, selectedUse: v }))}
-        selectedCategories={filters.selectedCategories}
         onToggleCategory={(c) =>
           setFilters((f) => {
             const next = new Set(f.selectedCategories);
-            if (next.has(c)) next.delete(c);
-            else next.add(c);
+            next.has(c) ? next.delete(c) : next.add(c);
             return { ...f, selectedCategories: next };
           })
         }
         onClearCategories={() =>
-          setFilters((f) => ({ ...f, selectedCategories: new Set<string>() }))
+          setFilters((f) => ({ ...f, selectedCategories: new Set() }))
         }
       />
-       <SystemGrid systems={visibleSystems} />
-    </Container>
+
+      <SystemGrid systems={visibleSystems} />
+    </AppLayout>
   );
 }

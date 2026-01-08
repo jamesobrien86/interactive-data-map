@@ -1,4 +1,5 @@
 export type LayoutMode = 'grid' | 'graph';
+export type AppView = 'login' | 'dashboard';
 
 export interface SystemNode {
   id: string; // fides_key
