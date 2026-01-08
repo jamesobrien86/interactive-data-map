@@ -17,7 +17,6 @@ export const allLeafCategories = (m: DataMapModel) =>
 export const applyFilters = (systems: SystemNode[], filters: FiltersState) => {
   return systems.filter((s) => {
     const useOk = filters.selectedUse === 'ALL' || s.dataUses.includes(filters.selectedUse);
-
     const leafs = new Set(s.dataCategories.map(leafCategory));
     const catsOk =
       filters.selectedCategories.size === 0 ||
