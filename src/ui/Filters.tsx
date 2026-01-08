@@ -3,12 +3,15 @@ import {
   Button,
   HStack,
   NativeSelect,
+  Separator,
   Tag,
   Text,
-  VStack,
   Wrap,
-  WrapItem,
+  WrapItem
 } from '@chakra-ui/react';
+import { getTagColorScheme } from './TagColors';
+// If you're using Tag.Root from your DS, keep that and swap the Tag block below.
+
 
 export function Filters(props: {
   uses: string[];
@@ -30,63 +33,96 @@ export function Filters(props: {
   } = props;
 
   return (
-    <Box borderWidth="1px" borderColor="whiteAlpha.200" borderRadius="lg" p={4} mt={6} bg="whiteAlpha.50" > 
-      <VStack align="stretch">
-        <HStack justify="space-between" align="end" wrap="wrap">
-          <Box minW={{ base: '100%', md: '320px' }}>
-            <Text fontSize="sm" color="gray.400" mb={2}>
-              Filter by data use
-            </Text>
-
-            <NativeSelect.Root size="sm" width="240px" >
-               <NativeSelect.Field  value={selectedUse}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onUseChange(e.target.value as 'ALL' | string)}
-                  bg="blackAlpha.400"
-                  borderColor="whiteAlpha.200">
-                    <option value="ALL">All</option>
-                    {uses.map((use:string) => (
-                      <option key={use} value={use}>
-                        {use}
-                      </option>
-                    ))}
-              </NativeSelect.Field>
-            </NativeSelect.Root>
-          </Box>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClearCategories}
-            disabled={selectedCategories.size === 0}
-          >
-            Clear categories
-          </Button>
-        </HStack>
-
-        <Box aria-label="category-filter">
-          <Text fontSize="sm" color="gray.400" mb={2}>
-            Filter by data categories (leaf)
+    <Box
+      mt={6}
+      borderWidth="1px"
+      borderColor="blackAlpha.200"
+      borderRadius="xl"
+      bg="white"
+      boxShadow="sm"
+      overflow="hidden"
+    >
+      {/* Header row */}
+      <HStack justify="space-between" px={5} py={4}>
+        <Box>
+          <Text fontSize="sm" color="gray.600" fontWeight="medium" mb={2}>
+            Filter by data use
           </Text>
 
+          <NativeSelect.Root size="sm" width={{ base: 'full', md: '260px' }}>
+            <NativeSelect.Field
+              value={selectedUse}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                onUseChange(e.target.value as 'ALL' | string)
+              }
+              bg="gray.50"
+              borderColor="blackAlpha.300"
+              _hover={{ borderColor: 'blackAlpha.400' }}
+            >
+              <option value="ALL">All</option>
+              {uses.map((use: string) => (
+                <option key={use} value={use}>
+                  {use}
+                </option>
+              ))}
+            </NativeSelect.Field>
+          </NativeSelect.Root>
+        </Box>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onClearCategories}
+          disabled={selectedCategories.size === 0}
+        >
+          Clear categories
+        </Button>
+      </HStack>
+
+      <Separator borderColor="blackAlpha.200" />
+
+      <Box px={5} py={4} bg="gray.50">
+        <HStack justify="space-between" mb={2} align="baseline">
+          <Text fontSize="sm" color="gray.600" fontWeight="medium">
+            Filter by data categories
+          </Text>
+
+          <Text fontSize="xs" color="gray.500">
+            {selectedCategories.size ? `${selectedCategories.size} selected` : 'None selected'}
+          </Text>
+        </HStack>
+
+        <Box
+          borderWidth="1px"
+          borderColor="blackAlpha.200"
+          bg="white"
+          borderRadius="lg"
+          p={3}
+        >
           <Wrap>
-            {categories.map((category:string) => {
+            {categories.map((category: string) => {
               const active = selectedCategories.has(category);
+              const colorScheme = getTagColorScheme(category);
               return (
                 <WrapItem key={category}>
                   <Tag.Root
                     size="sm"
                     cursor="pointer"
+                    role="button"
+                    aria-pressed={active}
                     variant={active ? 'solid' : 'subtle'}
+                    colorPalette={colorScheme} // <- if you want chakra-only
                     onClick={() => onToggleCategory(category)}
+                    _hover={{ opacity: 0.9 }}
                   >
-                    <Tag.Label>{category}</Tag.Label>
+                    {category}
                   </Tag.Root>
                 </WrapItem>
               );
             })}
           </Wrap>
         </Box>
-      </VStack>
+      </Box>
     </Box>
   );
 }
