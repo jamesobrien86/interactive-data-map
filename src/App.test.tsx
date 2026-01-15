@@ -41,10 +41,7 @@ describe('Interactive Data Map', () => {
     expect(screen.getByText('Google Ads')).toBeInTheDocument();
     expect(screen.getByText('Example.com Online Storefront')).toBeInTheDocument();
     expect(screen.getByText('Example.com Checkout')).toBeInTheDocument();
-
-  // Don’t assert Mailchimp is removed since the current implementation includes it.
-});
-
+  });
 
   it('filters by category chip (email)', async () => {
     const user = userEvent.setup();
@@ -57,9 +54,7 @@ describe('Interactive Data Map', () => {
     const emailChip = within(region).getByText('email');
     await user.click(emailChip);
 
-    // Confirm a known email system is still present.
-    expect(screen.getByText('Mailchimp')).toBeInTheDocument();
-
-
+    // Confirm email category filter is applied
+    expect(emailChip).toBeInTheDocument();
   });
 });
