@@ -9,7 +9,7 @@ import {
   Wrap,
   WrapItem
 } from '@chakra-ui/react';
-import { getTagColorScheme } from './TagColors';
+import { getTagColorScheme } from '../helpers/TagColors';
 
 
 export function Filters(props: {

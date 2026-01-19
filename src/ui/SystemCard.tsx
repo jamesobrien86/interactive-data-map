@@ -16,7 +16,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { Tag, TagLabel } from '@chakra-ui/react';
 import { leafCategory } from '../domain/normalize';
 import type { SystemNode } from '../domain/types';
-import { getTagColorScheme } from './TagColors';
+import { getTagColorScheme } from '../helpers/TagColors';
 
 const uniq = <T,>(arr: T[]) => Array.from(new Set(arr));
 
